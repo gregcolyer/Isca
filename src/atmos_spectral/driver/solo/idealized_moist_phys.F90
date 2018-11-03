@@ -115,6 +115,7 @@ logical :: do_damping = .false.
 
 
 logical :: mixed_layer_bc = .false.
+logical :: do_surface_flux = .true.
 logical :: gp_surface = .false. !s Use Schneider & Liu 2009's prescription of lower-boundary heat flux
 logical :: newt_relax_surface = .false. !s Use Schneider & Liu 2009's prescription of lower-boundary heat flux
 
@@ -147,6 +148,7 @@ namelist / idealized_moist_phys_nml / turb, lwet_convection, do_bm, do_ras, roug
                                       roughness_moist, roughness_mom, do_virtual,    &
                                       land_option, land_file_name, land_field_name,   & !s options for idealised land
                                       land_roughness_prefactor,               &
+                                      do_surface_flux,               &
                                       gp_surface, newt_relax_surface, convection_scheme,          &
                                       bucket, init_bucket_depth, init_bucket_depth_land, & !RG Add bucket 
                                       max_bucket_depth_land, robert_bucket, raw_bucket, &
@@ -939,7 +941,7 @@ if(.not.mixed_layer_bc) then
 !!$  t_surf = surface_temperature(tg(:,:,:,previous), p_full(:,:,:,current), p_half(:,:,:,current))
 end if
 
-if(.not.gp_surface .and. .not.newt_relax_surface) then 
+if(.not.gp_surface .and. .not.newt_relax_surface .and. do_surface_flux) then 
 call surface_flux(                                                          &
                   tg(:,:,num_levels,previous),                              &
  grid_tracers(:,:,num_levels,previous,nsphum),                              &
