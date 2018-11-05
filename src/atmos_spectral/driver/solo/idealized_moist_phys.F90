@@ -1109,7 +1109,7 @@ if(turb) then
 !!$   dhdt_atm   = 0.0
 !!$   dedq_atm   = 0.0
 
-   if(.not.((mixed_layer_bc.or.gp_surface).or.newt_relax_surface)) then
+   if(.not.((mixed_layer_bc.or.gp_surface).or.newt_relax_surface).and.do_surface_flux) then  ! need to condition on do_surface_flux too here?
      call error_mesg('atmosphere','no diffusion implentation for non-mixed layer b.c.',FATAL)
    endif
 
